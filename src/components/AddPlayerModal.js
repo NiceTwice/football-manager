@@ -5,7 +5,9 @@ import {createPlayer} from "../actions/common";
 import {playerPositions} from "../utils/datas";
 import { Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap';
 
-@connect()
+@connect(store => ({
+  teams: store.teams.teams
+}))
 class AddPlayerModal extends React.PureComponent {
   state = {
     avatar: '',
@@ -14,14 +16,14 @@ class AddPlayerModal extends React.PureComponent {
     birthLocation: '',
     contractDate: '',
     description: '',
-    position: ''
+    position: '',
+    teamId: ''
   }
   confirm = (e) => {
     e.preventDefault();
     this.props.dispatch(createPlayer({
       player: {
-        ...this.state,
-        teamId: this.props.match.params.teamId
+        ...this.state
       }
     }));
     this.close();
@@ -32,8 +34,12 @@ class AddPlayerModal extends React.PureComponent {
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
   }
+  componentWillMount(){
+    this.setState({teamId: this.props.match.params.teamId})
+  }
   render(){
-    const {avatar, birthdate, name, birthLocation, contractDate, description, position} = this.state;
+    const {avatar, birthdate, name, birthLocation, contractDate, description, position, teamId} = this.state;
+    const {teams} = this.props
 
     return (
         <Modal isOpen={true} toggle={this.close}>
@@ -98,6 +104,17 @@ class AddPlayerModal extends React.PureComponent {
                     {playerPositions.map((p,i) => <option key={i}>{p}</option>)}
                   </Input>
                 </Col>
+              </FormGroup>
+              <FormGroup>
+                <Label>Team</Label>
+                <Input type="select"
+                       value={teamId}
+                       onChange={this.onChange}
+                       name="teamId"
+                       required
+                       placeholder="Team">
+                  {teams.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}
+                </Input>
               </FormGroup>
               <FormGroup>
                 <Label>Description</Label>

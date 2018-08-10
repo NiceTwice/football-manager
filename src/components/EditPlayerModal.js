@@ -6,7 +6,8 @@ import {playerPositions} from "../utils/datas";
 import { Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap';
 
 @connect((store, props) => ({
-  player: store.teams.players[props.match.params.playerId]
+  player: store.teams.players[props.match.params.playerId],
+  teams: store.teams.teams
 }))
 class EditPlayerModal extends React.PureComponent {
   state = {
@@ -16,7 +17,8 @@ class EditPlayerModal extends React.PureComponent {
     birthLocation: '',
     contractDate: '',
     description: '',
-    position: ''
+    position: '',
+    teamId: ''
   }
   confirm = (e) => {
     e.preventDefault();
@@ -30,7 +32,6 @@ class EditPlayerModal extends React.PureComponent {
   }
   componentWillMount(){
     const {player} = this.props;
-
     if (!!player){
       this.setState({
         avatar: player.avatar,
@@ -39,7 +40,8 @@ class EditPlayerModal extends React.PureComponent {
         birthLocation: player.birthLocation,
         contractDate: player.contractDate,
         description: player.description,
-        position: player.position
+        position: player.position,
+        teamId: player.teamId
       })
     }else
       this.close()
@@ -51,7 +53,8 @@ class EditPlayerModal extends React.PureComponent {
     this.setState({[e.target.name]: e.target.value});
   }
   render(){
-    const {avatar, birthdate, name, birthLocation, contractDate, description, position} = this.state;
+    const {avatar, birthdate, name, birthLocation, contractDate, description, position, teamId} = this.state;
+    const {teams} = this.props;
 
     return (
         <Modal isOpen={true} toggle={this.close}>
@@ -116,6 +119,17 @@ class EditPlayerModal extends React.PureComponent {
                     {playerPositions.map((p,i) => <option key={i}>{p}</option>)}
                   </Input>
                 </Col>
+              </FormGroup>
+              <FormGroup>
+                <Label>Team</Label>
+                <Input type="select"
+                       value={teamId}
+                       onChange={this.onChange}
+                       name="teamId"
+                       required
+                       placeholder="Team">
+                  {teams.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}
+                </Input>
               </FormGroup>
               <FormGroup>
                 <Label>Description</Label>

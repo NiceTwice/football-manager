@@ -42,6 +42,21 @@ export default createReducer({
     })
   },
   ['UPDATE_PLAYER'](state, {player}){
+    if (state.players[player.id].teamId !== player.teamId){
+      const oldTeamIdx = state.teams.findIndex(team => team.id === state.players[player.id].teamId);
+      const newTeamIdx = state.teams.findIndex(team => team.id === player.teamId);
+
+      state = update(state, {
+        teams: {
+          [oldTeamIdx]: {
+            players: {$splice: [[state.teams[oldTeamIdx].players.findIndex(playerId => playerId === player.id), 1]]}
+          },
+          [newTeamIdx]: {
+            players: {$unshift: [player.id]}
+          }
+        }
+      })
+    }
     return update(state, {
       players: {
         [player.id]: {$merge: player}
