@@ -3,4 +3,4 @@ import teams from "./teamsReducer";
 
 export default combineReducers({
   teams
-})
+});
