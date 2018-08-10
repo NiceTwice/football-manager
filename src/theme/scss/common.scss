@@ -6,6 +6,11 @@ body {
   color: #999;
 }
 
+.t-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .App {
   display: flex;
   flex-direction: column;
@@ -100,6 +105,29 @@ body {
       span.t-muted {
         flex-shrink: 0;
         width: 150px;
+      }
+    }
+    @media all and (max-width: 991px){
+      .list-group-item {
+        width: 100%;
+        margin-right: 0 !important;
+        flex-direction: column;
+        &:not(:last-child){
+          margin-bottom: 20px;
+        }
+        h5 {
+          text-align: center;
+        }
+        .desc > p {
+          align-items: center;
+        }
+        .description {
+          height: auto;
+          max-height: 150px;
+        }
+        .avatar {
+          margin: 0 auto 15px auto;
+        }
       }
     }
   }

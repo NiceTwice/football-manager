@@ -18,8 +18,10 @@ class TeamListItem extends React.PureComponent {
         <Row>
           <Col className="teamListItem">
             <div className="title flex align-center" onClick={this.toggleCollapse}>
-              <span className="box grow flex align-center"><i className="fas fa-futbol"/> {team.name}</span>
-              <span className="count">
+              <span className="box grow flex align-center t-ellipsis">
+                <i className="fas fa-futbol"/> <span className="t-ellipsis">{team.name}</span>
+              </span>
+              <span className="count box noshrink">
                 <i className="far fa-user"/> {team.players.length}
               </span>
               <i className="fas fa-caret-down"/>
